@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeetCode Gen Z Solver - Improved UI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    body {
+      background-color: #f7f9fc;
+      color: #2d3748;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      width: 450px;
+      min-height: 500px;
+      max-height: 600px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #4a5568 0%, #1a202c 100%);
+      color: white;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px 12px 0 0;
+    }
+    
+    h1 {
+      font-size: 20px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 4px;
+    }
+    
+    .tab-btn {
+      background-color: rgba(45, 55, 72, 0.7);
+      color: #a0aec0;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .tab-btn:hover {
+      background-color: rgba(74, 85, 104, 0.9);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .tab-btn.active {
+      background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 -2px 10px rgba(49, 130, 206, 0.3);
+    }
+    
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 0 0 12px 12px;
+      position: relative;
+    }
+    
+    /* Solution Tab */
+    #solutionContent {
+      display: block;
+    }
+    
+    #chatContent, #settingsContent {
+      display: none;
+    }
+    
+    .problem-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .language-selector {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 8px;
+    }
+    
+    .language-selector select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e0;
+      background-color: white;
+      font-size: 14px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .refresh-btn {
+      background-color: #e2e8f0;
+      border: none;
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .refresh-btn:hover {
+      background-color: #cbd5e0;
+      transform: rotate(180deg);
+    }
+    
+    .explanation {
+      background-color: #ebf8ff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .code-container {
+      margin-bottom: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f7fafc;
+      padding: 10px 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .copy-btn {
+      background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .copy-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    pre {
+      margin: 0;
+      padding: 16px;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow: auto;
+    }
+    
+    .complexity {
+      font-size: 14px;
+      color: #718096;
+      margin-top: 12px;
+    }
+    
+    /* Chat Tab */
+    .chat-messages {
+      height: 350px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .empty-chat {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #a0aec0;
+      font-style: italic;
+      text-align: center;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+    
+    .message {
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      border-radius: 18px;
+      max-width: 85%;
+      word-break: break-word;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .user-message {
+      background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .bot-message {
+      background-color: white;
+      color: #2d3748;
+      align-self: flex-start;
+      border: 1px solid #e2e8f0;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .chat-input-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    
+    .chat-input-container input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: 1px solid #cbd5e0;
+      font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .chat-input-container button {
+      background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+      color: white;
+      border: none;
+      border-radius: 24px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .quick-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .prompt-btn {
+      background-color: #f7fafc;
+      color: #4a5568;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    /* Settings Tab */
+    .settings-group {
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .settings-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .settings-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #4a5568;
+      font-size: 15px;
+    }
+    
+    .api-key-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    
+    .api-key-container input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e0;
+      font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .show-btn {
+      background-color: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      width: 42px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .save-btn {
+      background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      width: 100%;
+      margin-top: 4px;
+    }
+    
+    .success-message {
+      color: #38a169;
+      margin-top: 12px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    /* Syntax highlighting colors */
+    .keyword { color: #569cd6; }
+    .function { color: #dcdcaa; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+    .number { color: #b5cea8; }
+    .class-name { color: #4ec9b0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>LeetCode Gen Z Solver 🚀</h1>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('solution')">Solution</button>
+        <button class="tab-btn" onclick="showTab('chat')">Chat</button>
+        <button class="tab-btn" onclick="showTab('settings')">Settings</button>
+      </div>
+    </header>
+    
+    <main>
+      <!-- Solution Tab -->
+      <div id="solutionContent" class="tab-content">
+        <div class="problem-title">Two Sum</div>
+        
+        <div class="language-selector">
+          <label for="languageSelect">Language:</label>
+          <select id="languageSelect">
+            <option value="javascript">JavaScript</option>
+            <option value="python" selected>Python</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+          </select>
+          <button class="refresh-btn">↻</button>
+        </div>
+        
+        <div class="explanation">
+          This solution uses a hash map to keep track of numbers we've seen so far. For each number, we check if its complement (target - num) is already in the hash map. If it is, we found our pair! If not, we add the current number to the hash map and continue.
+        </div>
+        
+        <div class="code-container">
+          <div class="code-header">
+            <span>Solution</span>
+            <button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="keyword">def</span> <span class="function">twoSum</span>(nums, target):
+    <span class="comment"># Create a dictionary to store numbers we've seen</span>
+    seen = {}
+    
+    <span class="comment"># Iterate through the array with index</span>
+    <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="function">enumerate</span>(nums):
+        <span class="comment"># Calculate the complement we need to find</span>
+        complement = target - num
+        
+        <span class="comment"># Check if the complement exists in our dictionary</span>
+        <span class="keyword">if</span> complement <span class="keyword">in</span> seen:
+            <span class="keyword">return</span> [seen[complement], i]
+        
+        <span class="comment"># Store current number and its index</span>
+        seen[num] = i
+    
+    <span class="comment"># No solution found</span>
+    <span class="keyword">return</span> []</code></pre>
+        </div>
+        
+        <div class="complexity">
+          Time Complexity: O(n) | Space Complexity: O(n)
+        </div>
+      </div>
+      
+      <!-- Chat Tab -->
+      <div id="chatContent" class="tab-content">
+        <div class="chat-messages">
+          <div class="empty-chat">
+            <p>Ask anything about Two Sum!</p>
+            <p>I can explain solutions, optimize code, or give you hints.</p>
+          </div>
+        </div>
+        
+        <div class="chat-input-container">
+          <input 
+            type="text" 
+            placeholder="Ask anything about this problem..." 
+            aria-label="Chat message input"
+          />
+          <button title="Send message">Send</button>
+        </div>
+        
+        <div class="quick-prompts">
+          <button 
+            class="prompt-btn"
+            title="Get a step-by-step explanation"
+          >
+            Explain in baby steps
+          </button>
+          <button 
+            class="prompt-btn"
+            title="Get optimization suggestions"
+          >
+            Optimize solution
+          </button>
+          <button 
+            class="prompt-btn"
+            title="Get hints without full solution"
+          >
+            Hints only
+          </button>
+        </div>
+      </div>
+      
+      <!-- Settings Tab -->
+      <div id="settingsContent" class="tab-content">
+        <div class="settings-group">
+          <label for="apiKeyInput">Gemini API Key:</label>
+          <div class="api-key-container">
+            <input 
+              type="password" 
+              id="apiKeyInput" 
+              placeholder="Enter your Gemini API key" 
+            />
+            <button 
+              class="show-btn"
+              title="Show API key"
+            >
+              👁️
+            </button>
+          </div>
+          <button 
+            class="save-btn"
+          >
+            Save API Key
+          </button>
+        </div>
+        
+        <div class="settings-group">
+          <h3>About LeetCode Gen Z Solver</h3>
+          <p>Version 1.0</p>
+          <p>This Chrome extension helps you solve LeetCode problems with Gen Z style explanations, providing clear solutions and interactive chat assistance.</p>
+          <p>To get a Gemini API key, visit: <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a></p>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script>
+    function showTab(tabName) {
+      // Hide all tab contents
+      document.getElementById('solutionContent').style.display = 'none';
+      document.getElementById('chatContent').style.display = 'none';
+      document.getElementById('settingsContent').style.display = 'none';
+      
+      // Show the selected tab content
+      document.getElementById(tabName + 'Content').style.display = 'block';
+      
+      // Update active tab button
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      tabButtons.forEach(button => {
+        button.classList.remove('active');
+        if (button.textContent.toLowerCase() === tabName) {
+          button.classList.add('active');
+        }
+      });
+    }
+    
+    // Add click event for copy button
+    document.querySelector('.copy-btn').addEventListener('click', function() {
+      const code = document.querySelector('pre code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        this.textContent = 'Copied!';
+        setTimeout(() => {
+          this.textContent = 'Copy';
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>

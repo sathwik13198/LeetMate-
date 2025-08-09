@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Gen Z Solver - Dynamic Solution Test</title>
+    <link rel="stylesheet" href="libs/prism.css">
+    <script src="libs/prism.js" defer></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --background-color: #f5f7fa;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --border-color: #e1e4e8;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --header-gradient: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header h1 span {
+            font-size: 28px;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        .problem-input {
+            margin-bottom: 30px;
+        }
+
+        .problem-input h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        .solution-output {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .solution-output.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(52, 152, 219, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--error-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            color: #c0392b;
+        }
+
+        .explanation {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .code-container {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e1e4e8;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f1f2f6;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .code-header span {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .copy-btn {
+            background-color: transparent;
+            color: #555;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        pre {
+            margin: 0;
+            padding: 15px;
+            background-color: #282c34;
+            color: #abb2bf;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .complexity {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #555;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span>🧠</span> LeetCode Gen Z Solver</h1>
+        </header>
+        
+        <main>
+            <div class="problem-input">
+                <h2>Enter Problem Details</h2>
+                
+                <div class="form-group">
+                    <label for="problem-title">Problem Title</label>
+                    <input type="text" id="problem-title" placeholder="e.g., Two Sum" value="Two Sum">
+                </div>
+                
+                <div class="form-group">
+                    <label for="problem-description">Problem Description</label>
+                    <textarea id="problem-description" placeholder="Paste the problem description here">Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="problem-constraints">Constraints (Optional)</label>
+                    <textarea id="problem-constraints" placeholder="Paste any constraints here">2 <= nums.length <= 10^4
+-10^9 <= nums[i] <= 10^9
+-10^9 <= target <= 10^9
+Only one valid answer exists.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="problem-examples">Examples (Optional)</label>
+                    <textarea id="problem-examples" placeholder="Paste example test cases here">Example 1:
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+Example 2:
+Input: nums = [3,2,4], target = 6
+Output: [1,2]</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="language-select">Language</label>
+                    <select id="language-select">
+                        <option value="javascript">JavaScript</option>
+                        <option value="python" selected>Python</option>
+                        <option value="java">Java</option>
+                        <option value="cpp">C++</option>
+                    </select>
+                </div>
+                
+                <button id="generate-btn">Generate Solution</button>
+            </div>
+            
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Generating solution...</p>
+            </div>
+            
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            
+            <div id="solution-output" class="solution-output">
+                <div id="explanation" class="explanation"></div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Solution</span>
+                        <button id="copy-btn" class="copy-btn">Copy</button>
+                    </div>
+                    <pre id="code-block"></pre>
+                </div>
+                
+                <div id="complexity" class="complexity"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // DOM Elements
+        const problemTitleInput = document.getElementById('problem-title');
+        const problemDescriptionInput = document.getElementById('problem-description');
+        const problemConstraintsInput = document.getElementById('problem-constraints');
+        const problemExamplesInput = document.getElementById('problem-examples');
+        const languageSelect = document.getElementById('language-select');
+        const generateBtn = document.getElementById('generate-btn');
+        const loadingElement = document.getElementById('loading');
+        const errorMessageElement = document.getElementById('error-message');
+        const solutionOutputElement = document.getElementById('solution-output');
+        const explanationElement = document.getElementById('explanation');
+        const codeBlockElement = document.getElementById('code-block');
+        const complexityElement = document.getElementById('complexity');
+        const copyBtn = document.getElementById('copy-btn');
+
+        // Event Listeners
+        generateBtn.addEventListener('click', generateSolution);
+        copyBtn.addEventListener('click', copyCode);
+
+        // Generate Solution
+        function generateSolution() {
+            // Get problem details
+            const title = problemTitleInput.value.trim();
+            const description = problemDescriptionInput.value.trim();
+            const constraints = problemConstraintsInput.value.trim();
+            const examples = problemExamplesInput.value.trim();
+            const language = languageSelect.value;
+
+            // Validate inputs
+            if (!title || !description) {
+                showError('Please enter a problem title and description.');
+                return;
+            }
+
+            // Show loading indicator
+            loadingElement.style.display = 'flex';
+            errorMessageElement.style.display = 'none';
+            solutionOutputElement.classList.remove('active');
+
+            // Simulate API call (in a real extension, this would call the Gemini API)
+            setTimeout(() => {
+                // Hide loading indicator
+                loadingElement.style.display = 'none';
+
+                // Sample response based on language
+                let response;
+                if (language === 'python') {
+                    response = generatePythonSolution(title);
+                } else if (language === 'javascript') {
+                    response = generateJavaScriptSolution(title);
+                } else if (language === 'java') {
+                    response = generateJavaSolution(title);
+                } else if (language === 'cpp') {
+                    response = generateCppSolution(title);
+                }
+
+                // Parse response
+                parseResponse(response, language);
+            }, 2000);
+        }
+
+        // Parse response
+        function parseResponse(response, language) {
+            // Extract explanation (first part before code block)
+            const explanationText = response.explanation;
+            explanationElement.innerHTML = explanationText;
+
+            // Extract code
+            const code = response.code;
+            codeBlockElement.textContent = code;
+            highlightCode(codeBlockElement, language);
+
+            // Extract complexity
+            const complexityText = response.complexity;
+            complexityElement.innerHTML = complexityText;
+
+            // Show solution output
+            solutionOutputElement.classList.add('active');
+        }
+
+        // Copy code to clipboard
+        function copyCode() {
+            const code = codeBlockElement.textContent;
+            navigator.clipboard.writeText(code);
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+        }
+
+        // Show error message
+        function showError(message) {
+            errorMessageElement.textContent = message;
+            errorMessageElement.style.display = 'block';
+            loadingElement.style.display = 'none';
+        }
+
+        // Syntax highlighting using Prism.js
+        function highlightCode(element, language) {
+            // Map our language values to Prism's language classes
+            const languageMap = {
+                'javascript': 'javascript',
+                'js': 'javascript',
+                'python': 'python',
+                'python3': 'python',
+                'py': 'python',
+                'java': 'java',
+                'cpp': 'cpp',
+                'c++': 'cpp'
+            };
+            
+            // Set the appropriate language class
+            const prismLanguage = languageMap[language.toLowerCase()] || 'clike';
+            element.className = `language-${prismLanguage}`;
+            
+            // Apply Prism highlighting
+            Prism.highlightElement(element);
+        }
+
+        // Generate sample solutions for different languages
+        function generatePythonSolution(title) {
+            return {
+                explanation: "Yo bestie! 🔥 This Two Sum problem is actually super chill to solve! We're just gonna use a hash map (dictionary in Python) to keep track of numbers we've seen so far. For each number, we check if its complement (target - num) is already in our dictionary. If it is, we found our pair! If not, we add the current number to the dictionary and keep going. It's like finding your bestie in a crowd - once you spot them, you're good to go! 💯",
+                code: "def twoSum(nums, target):\n    seen = {}  # Dictionary to store numbers we've seen\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []  # No solution found (though the problem guarantees one exists)",
+                complexity: "Time Complexity: O(n) - we only need to go through the array once\nSpace Complexity: O(n) - in the worst case, we might need to store almost all elements in our dictionary"
+            };
+        }
+
+        function generateJavaScriptSolution(title) {
+            return {
+                explanation: "Yo bestie! 🔥 This Two Sum problem is actually super chill to solve! We're just gonna use a hash map (object in JavaScript) to keep track of numbers we've seen so far. For each number, we check if its complement (target - num) is already in our object. If it is, we found our pair! If not, we add the current number to the object and keep going. It's like finding your bestie in a crowd - once you spot them, you're good to go! 💯",
+                code: "function twoSum(nums, target) {\n    const seen = {};  // Object to store numbers we've seen\n    for (let i = 0; i < nums.length; i++) {\n        const complement = target - nums[i];\n        if (complement in seen) {\n            return [seen[complement], i];\n        }\n        seen[nums[i]] = i;\n    }\n    return [];  // No solution found (though the problem guarantees one exists)\n}",
+                complexity: "Time Complexity: O(n) - we only need to go through the array once\nSpace Complexity: O(n) - in the worst case, we might need to store almost all elements in our object"
+            };
+        }
+
+        function generateJavaSolution(title) {
+            return {
+                explanation: "Yo bestie! 🔥 This Two Sum problem is actually super chill to solve! We're just gonna use a hash map to keep track of numbers we've seen so far. For each number, we check if its complement (target - num) is already in our map. If it is, we found our pair! If not, we add the current number to the map and keep going. It's like finding your bestie in a crowd - once you spot them, you're good to go! 💯",
+                code: "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> seen = new HashMap<>();  // Map to store numbers we've seen\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (seen.containsKey(complement)) {\n                return new int[] { seen.get(complement), i };\n            }\n            seen.put(nums[i], i);\n        }\n        return new int[0];  // No solution found (though the problem guarantees one exists)\n    }\n}",
+                complexity: "Time Complexity: O(n) - we only need to go through the array once\nSpace Complexity: O(n) - in the worst case, we might need to store almost all elements in our map"
+            };
+        }
+
+        function generateCppSolution(title) {
+            return {
+                explanation: "Yo bestie! 🔥 This Two Sum problem is actually super chill to solve! We're just gonna use a hash map (unordered_map in C++) to keep track of numbers we've seen so far. For each number, we check if its complement (target - num) is already in our map. If it is, we found our pair! If not, we add the current number to the map and keep going. It's like finding your bestie in a crowd - once you spot them, you're good to go! 💯",
+                code: "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        unordered_map<int, int> seen;  // Map to store numbers we've seen\n        for (int i = 0; i < nums.size(); i++) {\n            int complement = target - nums[i];\n            if (seen.find(complement) != seen.end()) {\n                return {seen[complement], i};\n            }\n            seen[nums[i]] = i;\n        }\n        return {};  // No solution found (though the problem guarantees one exists)\n    }\n};",
+                complexity: "Time Complexity: O(n) - we only need to go through the array once\nSpace Complexity: O(n) - in the worst case, we might need to store almost all elements in our map"
+            };
+        }
+    </script>
+    <!-- Prism.js is already loaded in the head -->
+</body>
+</html>
