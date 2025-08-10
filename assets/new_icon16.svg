@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <!-- Background with rounded corners -->
+  <rect width="16" height="16" rx="3" fill="#252525"/>
+  
+  <!-- Brain icon with gradient -->
+  <path d="M8 3.5C5.51472 3.5 3.5 5.51472 3.5 8C3.5 9.93333 4.71187 11.6342 6.5 12.3105V12.5C6.5 12.7761 6.72386 13 7 13H9C9.27614 13 9.5 12.7761 9.5 12.5V12.3105C11.2881 11.6342 12.5 9.93333 12.5 8C12.5 5.51472 10.4853 3.5 8 3.5Z" fill="url(#paint0_linear)"/>
+  
+  <!-- Lightning bolt -->
+  <path d="M8.75 6.5L7.25 9.5L8.5 9.5L7.25 12.5L10.25 8.5L8.75 8.5L10.25 6.5L8.75 6.5Z" fill="#FFFFFF"/>
+  
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id="paint0_linear" x1="3.5" y1="3.5" x2="12.5" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4fc3f7"/>
+      <stop offset="1" stop-color="#2196f3"/>
+    </linearGradient>
+  </defs>
+</svg>

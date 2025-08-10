@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <!-- Background with rounded corners -->
+  <rect width="128" height="128" rx="24" fill="#252525"/>
+  
+  <!-- Brain icon with gradient -->
+  <path d="M64 28C45.2223 28 30 43.2223 30 62C30 74.4609 37.0283 85.2736 47.5 90.4844V92C47.5 96.1422 50.8578 99.5 55 99.5H73C77.1422 99.5 80.5 96.1422 80.5 92V90.4844C90.9717 85.2736 98 74.4609 98 62C98 43.2223 82.7777 28 64 28Z" fill="url(#paint0_linear)"/>
+  
+  <!-- Lightning bolt -->
+  <path d="M70 52L58 76L68 76L58 100L82 68L70 68L82 52L70 52Z" fill="#FFFFFF"/>
+  
+  <!-- Code lines -->
+  <rect x="40" y="40" width="48" height="4" rx="2" fill="#FFFFFF" fill-opacity="0.6"/>
+  <rect x="40" y="50" width="32" height="4" rx="2" fill="#FFFFFF" fill-opacity="0.6"/>
+  <rect x="40" y="60" width="40" height="4" rx="2" fill="#FFFFFF" fill-opacity="0.6"/>
+  
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id="paint0_linear" x1="30" y1="28" x2="98" y2="99.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4fc3f7"/>
+      <stop offset="1" stop-color="#2196f3"/>
+    </linearGradient>
+  </defs>
+</svg>

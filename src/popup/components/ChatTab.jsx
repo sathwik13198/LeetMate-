@@ -126,7 +126,7 @@ const ChatTab = ({ problem }) => {
     }
   };
 
-  // Function to render message content with code highlighting
+  // Function to render message content with code highlighting and proper formatting
   const renderMessageContent = (text) => {
     // Check if the message contains code blocks
     if (text.includes('```')) {
@@ -147,15 +147,149 @@ const ChatTab = ({ problem }) => {
               );
             }
             
-            // Regular text
-            return part ? <p key={index}>{part}</p> : null;
+            // Format regular text with bullet points
+            if (part) {
+              // Process text to handle bullet points and emojis
+              return formatTextWithBulletPoints(part, index);
+            }
+            return null;
           })}
         </>
       );
     }
     
-    // Regular text message
-    return <p>{text}</p>;
+    // Format regular text message with bullet points
+    return formatTextWithBulletPoints(text, 0);
+  };
+  
+  // Helper function to format text with bullet points and preserve emojis
+  const formatTextWithBulletPoints = (text, key) => {
+    if (!text) return null;
+    
+    // Split by sections (numbered sections or headings)
+    const sections = [];
+    
+    // Check if text has sections with numbers (like "1. Title:")
+    const sectionRegex = /(^|\n)(\d+\.)\s+([^\n]+)(?:\n|$)/g;
+    let lastIndex = 0;
+    let match;
+    
+    // Find all section headers
+    const matches = [];
+    while ((match = sectionRegex.exec(text)) !== null) {
+      matches.push({
+        fullMatch: match[0],
+        index: match.index,
+        sectionNumber: match[2],
+        sectionTitle: match[3]
+      });
+    }
+    
+    // If we have sections, process them
+    if (matches.length > 0) {
+      // Process each section
+      matches.forEach((match, i) => {
+        // Add content before this section if it's not the first match
+        if (match.index > lastIndex) {
+          const beforeText = text.substring(lastIndex, match.index);
+          if (beforeText.trim()) {
+            sections.push({
+              type: 'content',
+              text: beforeText.trim()
+            });
+          }
+        }
+        
+        // Add the section header
+        sections.push({
+          type: 'header',
+          number: match.sectionNumber,
+          title: match.sectionTitle
+        });
+        
+        // Update lastIndex to after this section header
+        lastIndex = match.index + match.fullMatch.length;
+        
+        // Add content after this section header until the next section or end
+        const nextIndex = i < matches.length - 1 ? matches[i + 1].index : text.length;
+        const sectionContent = text.substring(lastIndex, nextIndex);
+        if (sectionContent.trim()) {
+          sections.push({
+            type: 'content',
+            text: sectionContent.trim()
+          });
+        }
+        
+        // Update lastIndex for next iteration
+        lastIndex = nextIndex;
+      });
+      
+      // Add any remaining content after the last section
+      if (lastIndex < text.length) {
+        const remainingText = text.substring(lastIndex);
+        if (remainingText.trim()) {
+          sections.push({
+            type: 'content',
+            text: remainingText.trim()
+          });
+        }
+      }
+    } else {
+      // No sections found, treat the whole text as one content section
+      sections.push({
+        type: 'content',
+        text: text.trim()
+      });
+    }
+    
+    // Render the sections
+    return (
+      <div key={key} className="formatted-message">
+        {sections.map((section, sectionIndex) => {
+          if (section.type === 'header') {
+            return (
+              <h3 key={`section-${sectionIndex}`} className="section-header">
+                {section.number} {section.title}
+              </h3>
+            );
+          } else {
+            // Process content sections into paragraphs and bullet points
+            const paragraphs = section.text.split('\n').filter(p => p.trim());
+            
+            return (
+              <div key={`content-${sectionIndex}`} className="section-content">
+                {paragraphs.map((paragraph, pIndex) => {
+                  // Check if paragraph already has bullet points
+                  if (paragraph.trim().startsWith('•') || 
+                      paragraph.trim().startsWith('-') || 
+                      paragraph.trim().startsWith('*')) {
+                    return <p key={`p-${sectionIndex}-${pIndex}`}>{paragraph}</p>;
+                  }
+                  
+                  // Check if it's a heading or title (ends with colon)
+                  if (paragraph.trim().endsWith(':')) {
+                    return <p key={`p-${sectionIndex}-${pIndex}`} className="sub-heading">{paragraph}</p>;
+                  }
+                  
+                  // Check for emojis at the beginning
+                  const emojiMatch = paragraph.match(/^\s*(\p{Emoji}|\p{Emoji_Presentation}|\p{Emoji_Modifier}|\p{Emoji_Component}|\p{Emoji_Modifier_Base})+/u);
+                  const emoji = emojiMatch ? emojiMatch[0] : '';
+                  const textContent = emojiMatch ? paragraph.slice(emojiMatch[0].length) : paragraph;
+                  
+                  // If it's a short line with emoji, keep it as is
+                  if (emoji && textContent.length < 50) {
+                    return <p key={`p-${sectionIndex}-${pIndex}`}>{paragraph}</p>;
+                  }
+                  
+                  // For regular paragraphs, add bullet points
+                  return <p key={`p-${sectionIndex}-${pIndex}`} className="bullet-point">• {emoji} {textContent.trim()}</p>;
+                })}
+              </div>
+            );
+          }
+        })}
+      </div>
+    );
   };
 
   return (

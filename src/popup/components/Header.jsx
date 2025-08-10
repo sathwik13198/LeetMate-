@@ -3,7 +3,7 @@ import React from 'react';
 const Header = ({ activeTab, setActiveTab }) => {
   return (
     <header>
-      <h1>LeetMate ⚡🚀</h1>
+      <h1>LeetMate <span className="logo-icon">⚡</span></h1>
       <div className="tabs">
         <button 
           className={`tab-btn ${activeTab === 'solution' ? 'active' : ''}`}
@@ -27,5 +27,6 @@ const Header = ({ activeTab, setActiveTab }) => {
     </header>
   );
 };
+
 
 export default Header;

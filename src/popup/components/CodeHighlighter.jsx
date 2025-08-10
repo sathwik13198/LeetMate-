@@ -15,12 +15,12 @@ const CodeHighlighter = ({ code, language }) => {
     'cpp': 'cpp'
   };
 
-  // Custom theme based on VSCode Dark+
+  // Custom theme based on VSCode Dark+ with enhanced colors
   const customStyle = {
     ...vscDarkPlus,
     'pre[class*="language-"]': {
       ...vscDarkPlus['pre[class*="language-"]'],
-      background: '#1e1e1e',
+      background: '#1a1a1a',
       borderRadius: '0 0 8px 8px',
       margin: 0,
       padding: '1em',
@@ -30,6 +30,7 @@ const CodeHighlighter = ({ code, language }) => {
       fontFamily: '"Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
       fontSize: '14px',
       lineHeight: '1.5',
+      color: '#e0e0e0',
     },
     'comment': {
       ...vscDarkPlus['comment'],
@@ -45,7 +46,7 @@ const CodeHighlighter = ({ code, language }) => {
     },
     'function': {
       ...vscDarkPlus['function'],
-      color: '#dcdcaa'
+      color: '#4fc3f7'
     },
     'number': {
       ...vscDarkPlus['number'],
@@ -53,7 +54,7 @@ const CodeHighlighter = ({ code, language }) => {
     },
     'operator': {
       ...vscDarkPlus['operator'],
-      color: '#d4d4d4'
+      color: '#e0e0e0'
     },
     'class-name': {
       ...vscDarkPlus['class-name'],
@@ -69,7 +70,7 @@ const CodeHighlighter = ({ code, language }) => {
     },
     'punctuation': {
       ...vscDarkPlus['punctuation'],
-      color: '#d4d4d4'
+      color: '#e0e0e0'
     }
   };
 

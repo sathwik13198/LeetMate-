@@ -336,29 +336,54 @@ function injectExtensionButton() {
   // Create button
   const button = document.createElement('button');
   button.id = 'leetcode-genz-solver-btn';
-  button.innerText = '🧠';
-  button.style.cssText = `
-    position: fixed;
-    top: 70px;
-    right: 20px;
-    z-index: 9999;
-    background: #3e8e41;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  `;
+button.innerHTML = '⚡';
+button.style.cssText = `
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 9999;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  color: #00d4ff;
+  border: 1px solid #00d4ff40;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 
+    0 4px 15px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+`;
   
   // Add hover effect
-  button.addEventListener('mouseover', () => {
-    button.style.backgroundColor = '#45a049';
-  });
-  button.addEventListener('mouseout', () => {
-    button.style.backgroundColor = '#3e8e41';
-  });
+  button.addEventListener('mouseenter', () => {
+  button.style.background = 'linear-gradient(135deg, #0f3460, #1a1a2e)';
+  button.style.boxShadow = `
+    0 6px 20px rgba(0, 212, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2)
+  `;
+  button.style.transform = 'translateY(-2px)';
+});
+
+button.addEventListener('mouseleave', () => {
+  button.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e)';
+  button.style.boxShadow = `
+    0 4px 15px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1)
+  `;
+  button.style.transform = 'translateY(0)';
+});
+
+button.addEventListener('mousedown', () => {
+  button.style.transform = 'translateY(0) scale(0.95)';
+});
+
+button.addEventListener('mouseup', () => {
+  button.style.transform = 'translateY(-2px) scale(1)';
+});
   
   // Add click handler to open modal
   button.addEventListener('click', () => {
